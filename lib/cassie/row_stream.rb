@@ -8,25 +8,35 @@ module Cassie
     protected
 
     # Override this in your sub-class. Don't call super.
-    def connection
+    # get_connection do |connection|
+    #   connection.get(...)
+    # end
+    def get_connection
       raise "Implement this in your sub-class. Don't call super."
     end
 
     # Override this in your sub-class. Default returns [key, row].
-    def build_object(entry)
-      [entry, connection.get(@cf, entry)]
+    def build_object(key)
+      get_connection do |connection|
+        return [key, connection.get(@cf, key)]
+      end
     end
 
     private
 
     def fetch_chunk(options={})
-      connection.get_range(@cf, :start => options[:start],
-                                :finish => options[:finish],
-                                :count => options[:count])
+      result = nil
+      get_connection do |connection|
+        result = connection.get_range(@cf,
+          :start => options[:start],
+          :finish => options[:finish],
+          :count => options[:count])
+      end
+      result
     end
 
-    def key_of(entry)
-      entry
+    def key_of(key)
+      key
     end
 
   end

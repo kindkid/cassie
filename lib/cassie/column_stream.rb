@@ -9,7 +9,10 @@ module Cassie
     protected
 
     # Override this in your sub-class. Don't call super.
-    def connection
+    # get_connection do |connection|
+    #   connection.get(...)
+    # end
+    def get_connection(&callback)
       raise "Implement this in your sub-class. Don't call super."
     end
 
@@ -21,9 +24,14 @@ module Cassie
     private
 
     def fetch_chunk(options={})
-      connection.get(@cf, @key, :start => options[:start],
-                                :finish => options[:finish],
-                                :count => options[:count])
+      result = nil
+      get_connection do |connection|
+        result = connection.get(@cf, @key,
+          :start => options[:start],
+          :finish => options[:finish],
+          :count => options[:count])
+      end
+      result
     end
 
     def key_of(entry)

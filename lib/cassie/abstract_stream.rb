@@ -41,7 +41,7 @@ module Cassie
     end
 
     def fetch_chunk(options={})
-      raise "Implement this method when you extend Cassie::Stream."
+      raise "Implement this method when you extend Cassie::AbstractStream."
       # start_key         = options[:start]
       # final_key         = options[:finish]
       # limit_result_size = options[:count]
@@ -55,10 +55,10 @@ module Cassie
     private
 
     def _fetch_chunk
-      @chunk = fetch_chunk(:start => frontier || start,
-                           :finish => finish,
+      @chunk = fetch_chunk(:start => @frontier || @start,
+                           :finish => @finish,
                            :count => @chunk_size).to_a
-      @offset = frontier.nil? ? 0 : 1
+      @offset = @frontier.nil? ? 0 : 1
     end
 
     def chunk_drained?
