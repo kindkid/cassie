@@ -24,7 +24,7 @@ module Cassie
       result = @chunk[@offset]
       @offset += 1
       @frontier = key_of(result)
-      return result
+      return result.nil? ? result : build_object(result)
     end
 
     def each(&callback)

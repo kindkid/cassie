@@ -26,11 +26,9 @@ module Cassie
 
     def fetch_chunk(options={})
       result = nil
+      opts = options.reject{|k,v| v.nil?}
       get_connection do |connection|
-        result = connection.get_range(@cf,
-          :start => options[:start],
-          :finish => options[:finish],
-          :count => options[:count])
+        result = connection.get_range_keys(@cf.to_s, opts)
       end
       result
     end
