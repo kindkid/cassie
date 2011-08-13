@@ -1,9 +1,5 @@
 # More info at https://github.com/guard/guard#readme
 
-guard 'ego' do
-  watch('Guardfile')
-end
-
 guard 'bundler' do
   watch('Gemfile')
   watch(/^.+\.gemspec/)

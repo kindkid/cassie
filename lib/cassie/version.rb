@@ -1,3 +1,3 @@
-module Cassie
-  VERSION = "0.0.3"
+class Cassie
+  VERSION = "0.1.0"
 end
